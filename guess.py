@@ -1,10 +1,11 @@
 lines = []
 with open('wordlist.txt', encoding='utf-8-sig') as f:
     lines = [line.rstrip() for line in f]
+lines = lines[:-1]
 
-for word in lines:
-    if len(word) != 5:
-        print(word)
+for i in range(len(lines)):
+    if len(lines[i]) != 5:
+        print(i)
 
 
 
@@ -21,11 +22,13 @@ def guess(word):
     score = 0
     copy = wordlist.copy()
     nth_word = 0
+    yellow_or_green = 0
 
 
     for x in range(5):
         
         if word[x] == first_word[x]:
+            yellow_or_green +=1
 
             for i in range(len(copy)):
                 if len(copy[i]) == 5 and first_word[x] != copy[i][x]:
@@ -33,6 +36,7 @@ def guess(word):
                         wordlist.remove(copy[i])
         
         elif first_word[x] in word:
+            yellow_or_green +=1
             
             for i in range(len(copy)):
                 if len(copy[i]) == 5 and first_word[x] == copy[i][x]:
@@ -70,10 +74,13 @@ def guess(word):
         if score > max_score:
             guess = x
         max_score = max(max_score, score)
+        if yellow_or_green <=2:
+            guess = "colin"
     copy = wordlist.copy()
     letter_count = {}
 
     while guess != word: 
+        weight +=1
         nth_word = guess
         #print(len(nth_word))
         #print(len(word))
@@ -119,13 +126,16 @@ def guess(word):
             score = 0
             for i in range(len(x)):
 
-                score += letter_values[x[i]]
+                #score += letter_values[x[i]]
                 
                 if x.count(x[i]) == 1:
-                    score += 7
+                    score += 7/weight
                     
                 if x[i] != x[i-1]:
                     score += letter_count[x[i]]
+                
+                if x[i] not in "qjz":
+                    score += 35
 
             if score > max_score:
                 guess = x

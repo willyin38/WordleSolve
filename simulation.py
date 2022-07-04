@@ -8,7 +8,7 @@ with open('wordlist.txt', encoding='utf-8-sig') as f:
 def simulation():
     data = []
     dic = {}
-    new = lines[:100]
+    new = lines[:-1]
     for word in new:
         data.append(int(guess(word)[-1]))
     c = Counter(data)
