@@ -1,8 +1,10 @@
-
 lines = []
 with open('wordlist.txt', encoding='utf-8-sig') as f:
     lines = [line.rstrip() for line in f]
 
+for word in lines:
+    if len(word) != 5:
+        print(word)
 
 
 
@@ -73,8 +75,8 @@ def guess(word):
 
     while guess != word: 
         nth_word = guess
-        print(len(nth_word))
-        print(len(word))
+        #print(len(nth_word))
+        #print(len(word))
 
         for x in range(5):
         
@@ -109,7 +111,7 @@ def guess(word):
             for i in x:
                 letter_count[i] = 1 + letter_count.get(i, 0)
         
-        score = 0
+        max_score = 0
         guess = ""
             
         for x in wordlist:
@@ -120,19 +122,21 @@ def guess(word):
                 score += letter_values[x[i]]
                 
                 if x.count(x[i]) == 1:
-                    score += 750
+                    score += 7
                     
                 if x[i] != x[i-1]:
                     score += letter_count[x[i]]
+
             if score > max_score:
                 guess = x
             max_score = max(max_score, score)
         copy = wordlist.copy()
         letter_count = {}
                 
+    guesses += 1
+
     return f"{guess} {guesses}"
 
-print(guess("hello"))
 
 
 
